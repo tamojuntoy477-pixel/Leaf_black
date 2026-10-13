@@ -105,7 +105,7 @@ static void draw(void){
    text(143,91,"MUSHBUD",WHITE,1);
    text(15,112,"YOUR HP",LIME,1);rect(15,123,92,7,RGB5(18,5,5));rect(15,123,92*playerHp/24,7,LIME);
    text(137,112,"FOE HP",LIME,1);rect(137,123,88,7,RGB5(18,5,5));rect(137,123,88*enemyHp/18,7,RGB5(31,17,4));
-   rect(0,140,W,20,GREEN);text(8,145,"A ATTACK B RUN",WHITE,1);
+   rect(0,140,W,20,GREEN);text(5,145,"A QUICK L SPECIAL B RUN",WHITE,1);
    return;
  }
 }
@@ -133,10 +133,16 @@ int main(void){
      }
    } else if(screen==3){
      if(keys&KEY_B)screen=2;
-     if(keys&KEY_A){
-       enemyHp-=6;
-       if(enemyHp<=0){wins++;screen=2;playerHp+=(choice==2?4:3);if(playerHp>(choice==2?26:choice==1?22:24))playerHp=(choice==2?26:choice==1?22:24);}
-       else {playerHp-=4;if(playerHp<=0){playerHp=(choice==2?26:choice==1?22:24);screen=2;}}
+     if(keys&(KEY_A|KEY_L)){
+       int damage=(keys&KEY_L)?10:6;
+       enemyHp-=damage;
+       if(enemyHp<=0){
+         wins++;screen=2;playerHp+=(choice==2?4:3);
+         if(playerHp>(choice==2?26:choice==1?22:24))playerHp=(choice==2?26:choice==1?22:24);
+       } else {
+         playerHp-=4;
+         if(playerHp<=0){playerHp=(choice==2?26:choice==1?22:24);screen=2;}
+       }
      }
    }
    draw();
