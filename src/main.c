@@ -46,6 +46,13 @@ static void creature(int cx,int cy,u16 c,int type){
 }
 static int screen = 0; /* 0 starter, 1 confirmed, 2 overworld, 3 battle */
 static int px = 1, py = 2, playerHp = 24, enemyHp = 18, wins = 0;
+static int maxHp(void) { return choice==2 ? 26 : choice==1 ? 22 : 24; }
+static void number(int x,int y,int n,u16 color,int scale) {
+  char buf[6]; int i=0;
+  if(n<0)n=0;
+  do { buf[i++]=(char)('0'+n%10); n/=10; } while(n>0 && i<5);
+  while(i>0) { char one[2]={buf[--i],0}; text(x,y,one,color,scale); x+=6*scale; }
+}
 static const char mapdata[5][9] = {
   "TTGGGTTT",
   "TGPPPGGT",
@@ -92,9 +99,9 @@ static void draw(void){
  if(screen==2){
    text(8,36,"ROUTE 01",LIME,1);drawMap();
    rect(0,140,W,20,GREEN);
-   text(5,144,"HP",WHITE,1);text(24,144,playerHp>=20?"24":playerHp>=10?"18":"06",WHITE,1);
-   text(61,144,"WINS",WHITE,1);text(98,144,wins==0?"0":wins<10?(wins==1?"1":wins==2?"2":"3"):"9",WHITE,1);
-   text(128,144,"A GRASS",WHITE,1);
+   text(5,144,"HP",WHITE,1);number(24,144,playerHp,WHITE,1);text(42,144,"/",WHITE,1);number(48,144,maxHp(),WHITE,1);
+   text(78,144,"WINS",WHITE,1);number(111,144,wins,WHITE,1);
+   text(143,144,"A SEARCH REST",WHITE,1);
    return;
  }
  if(screen==3){
@@ -116,7 +123,7 @@ int main(void){
    if(screen==0){
      if(keys&KEY_LEFT)choice=(choice+2)%3;
      if(keys&KEY_RIGHT)choice=(choice+1)%3;
-     if(keys&KEY_A){confirmed=1;screen=1;playerHp=(choice==2?26:choice==1?22:24);}
+     if(keys&KEY_A){confirmed=1;screen=1;playerHp=maxHp();}
    } else if(screen==1){
      if(keys&KEY_B){screen=0;confirmed=0;}
      if(keys&KEY_A){screen=2;px=1;py=2;}
@@ -128,8 +135,8 @@ int main(void){
      if(keys&KEY_B){screen=0;confirmed=0;}
      if(keys&KEY_A){
        if(mapdata[py][px]=='G'){screen=3;enemyHp=18;}
-       else if(playerHp<(choice==2?26:choice==1?22:24))playerHp+=2;
-       if(playerHp>(choice==2?26:choice==1?22:24))playerHp=(choice==2?26:choice==1?22:24);
+       else if(playerHp<maxHp())playerHp+=2;
+       if(playerHp>maxHp())playerHp=maxHp();
      }
    } else if(screen==3){
      if(keys&KEY_B)screen=2;
@@ -138,10 +145,10 @@ int main(void){
        enemyHp-=damage;
        if(enemyHp<=0){
          wins++;screen=2;playerHp+=(choice==2?4:3);
-         if(playerHp>(choice==2?26:choice==1?22:24))playerHp=(choice==2?26:choice==1?22:24);
+         if(playerHp>maxHp())playerHp=maxHp();
        } else {
          playerHp-=4;
-         if(playerHp<=0){playerHp=(choice==2?26:choice==1?22:24);screen=2;}
+         if(playerHp<=0){playerHp=maxHp();screen=2;}
        }
      }
    }
