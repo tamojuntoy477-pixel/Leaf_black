@@ -1,8 +1,9 @@
 # Leaf Black — status real
 
 ## Build GBA mais recente
-- GitHub Actions: **build concluído com sucesso** no commit `b9f4defeabfa15a7580b838ec68d88a342590d90`.
-- Execução: https://github.com/tamojuntoy477-pixel/Leaf_black/actions/runs/38418123570
+- GitHub Actions: build anterior concluído com sucesso no commit `b9f4defeabfa15a7580b838ec68d88a342590d90`; a compilação da atualização de HUD está em andamento no commit `00d7044abe647b97b5eb12fa4698afd59343858d`.
+- Execução anterior: https://github.com/tamojuntoy477-pixel/Leaf_black/actions/runs/38418123570
+- Execução atual: https://github.com/tamojuntoy477-pixel/Leaf_black/actions/runs/38423161444
 - Artefato gerado: `leaf-black-gba-prototype` (contém `leafblack.gba`, build de 7.320 bytes).
 - Este artefato é um protótipo técnico e pequeno; sucesso de compilação não significa que a ROM hack de FireRed esteja pronta nem que o jogo tenha sido testado em emulador.
 
@@ -13,6 +14,7 @@
 - Mapa de rota demonstrativo com movimento pelas setas.
 - Encontro em áreas de grama, batalha simples por turnos, HP e contador de vitórias.
 - Ataque rápido e ataque especial na batalha.
+- HUD atualizado para mostrar HP atual, HP máximo e total real de vitórias.
 - Dados de design dos iniciais em `data/species.json`.
 - Protótipo web com seleção, exploração ilustrativa e batalha de demonstração.
 
