@@ -44,36 +44,100 @@ static void creature(int cx,int cy,u16 c,int type){
  if(type==1){rect(cx+15,cy-25,8,10,BROWN);rect(cx+19,cy-32,7,10,RGB5(31,10,2));}
  if(type==2){rect(cx-6,cy-27,12,10,BLUE);rect(cx-3,cy-33,6,7,RGB5(10,23,31));}
 }
+static int screen = 0; /* 0 starter, 1 confirmed, 2 overworld, 3 battle */
+static int px = 1, py = 2, playerHp = 24, enemyHp = 18, wins = 0;
+static const char mapdata[5][9] = {
+  "TTGGGTTT",
+  "TGPPPGGT",
+  "TPPGPPGT",
+  "TTGPPPGT",
+  "TTTTGGGT"
+};
+static void drawMap(void) {
+  int x,y;
+  for(y=0;y<5;y++) for(x=0;x<8;x++) {
+    int tx=8+x*28, ty=36+y*20; char t=mapdata[y][x]; u16 c=GREEN;
+    if(t=='T') c=RGB5(3,12,5);
+    if(t=='G') c=RGB5(8,24,8);
+    if(t=='P') c=BROWN;
+    rect(tx,ty,26,18,c);
+    if(t=='T'){rect(tx+8,ty+3,10,9,RGB5(6,20,7));rect(tx+11,ty+12,4,5,BROWN);}
+    if(t=='G'){rect(tx+5,ty+5,2,7,LIME);rect(tx+16,ty+3,2,9,LIME);}
+    if(t=='P') rect(tx+5,ty+8,14,2,RGB5(23,18,9));
+    if(x==px&&y==py){rect(tx+8,ty+3,10,11,WHITE);rect(tx+10,ty+5,6,3,BLUE);rect(tx+10,ty+10,6,3,RGB5(2,4,7));}
+  }
+}
 static void draw(void){
  SetMode(MODE_3|BG2_ENABLE);
- rect(0,0,W,H,DARK);rect(0,0,W,47,GREEN);rect(0,43,W,4,LIME);
- text(12,10,"LEAF BLACK",WHITE,2);
- if(confirmed){
-   text(36,57,"STARTER CHOSEN",LIME,1);
-   creature(120,94,colors[choice],choice);
-   text(120-(int)(sizeof("FERNLING")-1)*3,121,names[choice],WHITE,1);
-   if(choice==0) text(82,134,"PLANT TYPE",LIME,1);
-   if(choice==1) text(91,134,"FIRE TYPE",LIME,1);
-   if(choice==2) text(88,134,"WATER TYPE",LIME,1);
-   rect(0,145,W,15,GREEN);text(8,149,"B BACK",WHITE,1);
+ rect(0,0,W,H,DARK);rect(0,0,W,30,GREEN);rect(0,27,W,3,LIME);
+ text(8,8,"LEAF BLACK",WHITE,2);
+ if(screen==0 || screen==1){
+   if(screen==1){
+     text(36,45,"STARTER CHOSEN",LIME,1);
+     creature(120,83,colors[choice],choice);
+     text(120-(int)(sizeof("FERNLING")-1)*3,108,names[choice],WHITE,1);
+     if(choice==0) text(82,121,"PLANT TYPE",LIME,1);
+     if(choice==1) text(91,121,"FIRE TYPE",LIME,1);
+     if(choice==2) text(88,121,"WATER TYPE",LIME,1);
+     rect(0,145,W,15,GREEN);text(8,149,"A START B BACK",WHITE,1);
+   } else {
+     text(14,43,"CHOOSE STARTER",LIME,1);
+     rect(9,64,68,69,choice==0?RGB5(8,18,7):RGB5(5,12,8));rect(86,64,68,69,choice==1?RGB5(23,9,4):RGB5(5,12,8));rect(163,64,68,69,choice==2?RGB5(4,12,23):RGB5(5,12,8));
+     creature(43,88,colors[0],0);creature(120,88,colors[1],1);creature(197,88,colors[2],2);
+     text(14,114,"FERN",WHITE,1);text(91,114,"CIND",WHITE,1);text(168,114,"BROOK",WHITE,1);
+     rect(0,145,W,15,GREEN);text(8,149,"LEFT RIGHT A SELECT",WHITE,1);
+   }
    return;
  }
- text(14,58,"CHOOSE STARTER",LIME,1);
- rect(9,78,68,62,choice==0?RGB5(8,18,7):RGB5(5,12,8));rect(86,78,68,62,choice==1?RGB5(23,9,4):RGB5(5,12,8));rect(163,78,68,62,choice==2?RGB5(4,12,23):RGB5(5,12,8));
- rect(9,78,68,2,choice==0?LIME:GREEN);rect(86,78,68,2,choice==1?LIME:GREEN);rect(163,78,68,2,choice==2?LIME:GREEN);
- creature(43,101,colors[0],0);creature(120,101,colors[1],1);creature(197,101,colors[2],2);
- text(14,126,"FERN",WHITE,1);text(91,126,"CIND",WHITE,1);text(168,126,"BROOK",WHITE,1);
- rect(0,145,W,15,GREEN);text(8,149,"LEFT RIGHT A SELECT",WHITE,1);
+ if(screen==2){
+   text(8,36,"ROUTE 01",LIME,1);drawMap();
+   rect(0,140,W,20,GREEN);
+   text(5,144,"HP",WHITE,1);text(24,144,playerHp>=20?"24":playerHp>=10?"18":"06",WHITE,1);
+   text(61,144,"WINS",WHITE,1);text(98,144,wins==0?"0":wins<10?(wins==1?"1":wins==2?"2":"3"):"9",WHITE,1);
+   text(128,144,"A GRASS",WHITE,1);
+   return;
+ }
+ if(screen==3){
+   text(8,36,"WILD BATTLE",LIME,1);
+   creature(62,74,colors[choice],choice);
+   creature(178,68,RGB5(18,15,8),0);
+   text(15,99,names[choice],WHITE,1);
+   text(143,91,"MUSHBUD",WHITE,1);
+   text(15,112,"YOUR HP",LIME,1);rect(15,123,92,7,RGB5(18,5,5));rect(15,123,92*playerHp/24,7,LIME);
+   text(137,112,"FOE HP",LIME,1);rect(137,123,88,7,RGB5(18,5,5));rect(137,123,88*enemyHp/18,7,RGB5(31,17,4));
+   rect(0,140,W,20,GREEN);text(8,145,"A ATTACK B RUN",WHITE,1);
+   return;
+ }
 }
 int main(void){
  irqInit();irqEnable(IRQ_VBLANK);SetMode(MODE_3|BG2_ENABLE);
  while(1){
    VBlankIntrWait();scanKeys();u16 keys=keysDown();
-   if(confirmed){if(keys&KEY_B)confirmed=0;}
-   else{
+   if(screen==0){
      if(keys&KEY_LEFT)choice=(choice+2)%3;
      if(keys&KEY_RIGHT)choice=(choice+1)%3;
-     if(keys&KEY_A)confirmed=1;
+     if(keys&KEY_A){confirmed=1;screen=1;playerHp=(choice==2?26:choice==1?22:24);}
+   } else if(screen==1){
+     if(keys&KEY_B){screen=0;confirmed=0;}
+     if(keys&KEY_A){screen=2;px=1;py=2;}
+   } else if(screen==2){
+     if(keys&KEY_LEFT&&px>0)px--;
+     if(keys&KEY_RIGHT&&px<7)px++;
+     if(keys&KEY_UP&&py>0)py--;
+     if(keys&KEY_DOWN&&py<4)py++;
+     if(keys&KEY_B){screen=0;confirmed=0;}
+     if(keys&KEY_A){
+       if(mapdata[py][px]=='G'){screen=3;enemyHp=18;}
+       else if(playerHp<(choice==2?26:choice==1?22:24))playerHp+=2;
+       if(playerHp>(choice==2?26:choice==1?22:24))playerHp=(choice==2?26:choice==1?22:24);
+     }
+   } else if(screen==3){
+     if(keys&KEY_B)screen=2;
+     if(keys&KEY_A){
+       enemyHp-=6;
+       if(enemyHp<=0){wins++;screen=2;playerHp+=(choice==2?4:3);if(playerHp>(choice==2?26:choice==1?22:24))playerHp=(choice==2?26:choice==1?22:24);}
+       else {playerHp-=4;if(playerHp<=0){playerHp=(choice==2?26:choice==1?22:24);screen=2;}}
+     }
    }
    draw();
  }
