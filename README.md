@@ -1,25 +1,27 @@
 # Leaf Black
 
-Projeto de fangame inspirado em aventuras de captura de criaturas, com a região original **Verdelume**.
+Projeto de fangame com região original **Verdelume** e criaturas próprias.
 
-## Estado atual
-- [x] Repositório e documentação inicial
-- [x] Protótipo jogável no navegador
-- [ ] Código-base GBA integrado
-- [ ] Região Verdelume e mapas
-- [ ] Criaturas, batalhas e progressão completas
-- [ ] Compilação e testes em emulador
+## Estado real do projeto
+- [x] Protótipo de seleção de iniciais no navegador
+- [x] Protótipo homebrew GBA compilado em `leafblack.gba` (artefato de CI)
+- [x] Plano técnico para desenvolver um patch de FireRed USA 1.0
+- [ ] Base de código FireRed integrada
+- [ ] História principal completa
+- [ ] Mapas, cidades, rotas e ginásios completos
+- [ ] Criaturas, sprites, batalhas e progressão completas
+- [ ] Patch IPS/BPS validado em ROM-base limpa e testes de emulador
 
-**Importante:** o protótipo atual roda no navegador e ainda não é um arquivo `.gba`. Uma ROM GBA precisa ser compilada a partir de um projeto-base compatível e testada. Não incluí ROM comercial nem arquivos protegidos.
+**Importante:** o arquivo GBA atual é um protótipo independente, não é ainda um hack da ROM Pokémon FireRed. O projeto não distribui ROM comercial. O objetivo de distribuição é um patch que o jogador aplica localmente à sua própria cópia compatível.
 
-## Testar
-Abra [index.html](./index.html) no navegador, ou publique o repositório com GitHub Pages.
+## Testar os protótipos
+- Abra [index.html](./index.html) no navegador.
+- Para o protótipo GBA, acesse [GitHub Actions](https://github.com/tamojuntoy477-pixel/Leaf_black/actions) e baixe o artefato da compilação mais recente.
 
 ## Conceito
 - Região: Verdelume
 - Iniciais: Fernling (Planta), Cindrake (Fogo), Brookit (Água)
 - Evoluções planejadas: Fernling → Leaflash → Verdantyr; Cindrake → Pyrodrake → Inferndrake; Brookit → Aquarion → Hydroxion
-- Meta de design: criaturas originais, exploração, batalhas e modos aleatórios.
 
-## Próximo passo para GBA
-Integrar o código-fonte de um projeto de descompilação compatível e compilar usando os assets obtidos legalmente pelo próprio jogador.
+## Próximas etapas
+Veja [docs/HACK_COMPLETO.md](./docs/HACK_COMPLETO.md) para o plano de desenvolvimento do hack FireRed USA 1.0.
