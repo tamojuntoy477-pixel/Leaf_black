@@ -16,7 +16,9 @@ jobs:
         uses: actions/checkout@v4
       - name: Build GBA ROM
         run: |
-          docker run --rm -v "$PWD:/work" -w /work devkitpro/devkitarm:latest bash -lc "pacman -S --noconfirm gba-dev >/dev/null && make"
+          docker run --rm -v "$PWD:/work" -w /work devkitpro/devkitarm:latest bash -lc "make"
+      - name: Check ROM output
+        run: test -s leafblack.gba
       - name: Upload ROM artifact
         uses: actions/upload-artifact@v4
         with:
