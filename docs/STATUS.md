@@ -1,10 +1,10 @@
 # Leaf Black — status real
 
 ## Build GBA mais recente
-- GitHub Actions: build anterior concluído com sucesso no commit `b9f4defeabfa15a7580b838ec68d88a342590d90`; a compilação da atualização de HUD está em andamento no commit `00d7044abe647b97b5eb12fa4698afd59343858d`.
-- Execução anterior: https://github.com/tamojuntoy477-pixel/Leaf_black/actions/runs/38418123570
-- Execução atual: https://github.com/tamojuntoy477-pixel/Leaf_black/actions/runs/38423161444
-- Artefato gerado: `leaf-black-gba-prototype` (contém `leafblack.gba`, build de 7.320 bytes).
+- GitHub Actions: compilação mais recente concluída com sucesso no commit `c8840f795f436a656d31fca528478263361de73d` (13/10/2026).
+- Execução mais recente: https://github.com/tamojuntoy477-pixel/Leaf_black/actions/runs/38424915995
+- Artefato gerado: `leaf-black-gba-prototype` (ZIP disponível na execução; contém o protótipo `leafblack.gba`).
+- Esta compilação confirma que o código compila; não substitui testes de jogabilidade em emulador.
 - Este artefato é um protótipo técnico e pequeno; sucesso de compilação não significa que a ROM hack de FireRed esteja pronta nem que o jogo tenha sido testado em emulador.
 
 ## Implementado no repositório
