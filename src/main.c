@@ -110,7 +110,7 @@ static void draw(void){
    creature(178,68,RGB5(18,15,8),0);
    text(15,99,names[choice],WHITE,1);
    text(143,91,"MUSHBUD",WHITE,1);
-   text(15,112,"YOUR HP",LIME,1);rect(15,123,92,7,RGB5(18,5,5));rect(15,123,92*playerHp/24,7,LIME);
+   text(15,112,"YOUR HP",LIME,1);rect(15,123,92,7,RGB5(18,5,5));rect(15,123,92*playerHp/maxHp(),7,LIME);
    text(137,112,"FOE HP",LIME,1);rect(137,123,88,7,RGB5(18,5,5));rect(137,123,88*enemyHp/18,7,RGB5(31,17,4));
    rect(0,140,W,20,GREEN);text(5,145,"A QUICK L SPECIAL B RUN",WHITE,1);
    return;
@@ -128,10 +128,10 @@ int main(void){
      if(keys&KEY_B){screen=0;confirmed=0;}
      if(keys&KEY_A){screen=2;px=1;py=2;}
    } else if(screen==2){
-     if(keys&KEY_LEFT&&px>0)px--;
-     if(keys&KEY_RIGHT&&px<7)px++;
-     if(keys&KEY_UP&&py>0)py--;
-     if(keys&KEY_DOWN&&py<4)py++;
+     if(keys&KEY_LEFT&&px>0&&mapdata[py][px-1]!='T')px--;
+     if(keys&KEY_RIGHT&&px<7&&mapdata[py][px+1]!='T')px++;
+     if(keys&KEY_UP&&py>0&&mapdata[py-1][px]!='T')py--;
+     if(keys&KEY_DOWN&&py<4&&mapdata[py+1][px]!='T')py++;
      if(keys&KEY_B){screen=0;confirmed=0;}
      if(keys&KEY_A){
        if(mapdata[py][px]=='G'){screen=3;enemyHp=18;}
