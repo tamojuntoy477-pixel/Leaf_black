@@ -24,4 +24,4 @@ Projeto de fangame com região original **Verdelume** e criaturas próprias.
 - Evoluções planejadas: Fernling → Leaflash → Verdantyr; Cindrake → Pyrodrake → Inferndrake; Brookit → Aquarion → Hydroxion
 
 ## Próximas etapas
-Veja [docs/HACK_COMPLETO.md](./docs/HACK_COMPLETO.md) para o plano de desenvolvimento do hack FireRed USA 1.0.
+Veja [docs/HACK_COMPLETO.md](./docs/HACK_COMPLETO.md) para o plano de desenvolvimento do hack FireRed USA 1.0 e [docs/RANDOMIZER.md](./docs/RANDOMIZER.md) para a especificação do Randomizer (iniciais, selvagens, treinadores, habilidades e golpes).
