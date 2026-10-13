@@ -12,6 +12,7 @@
 
 static volatile u16 *const fb = (u16 *)VRAM;
 static int choice = 0;
+static int confirmed = 0;
 static const char *names[] = {"FERNLING", "CINDRAKE", "BROOKIT"};
 static const u16 colors[] = {RGB5(10,27,9), RGB5(31,13,3), RGB5(5,18,31)};
 
@@ -46,15 +47,35 @@ static void creature(int cx,int cy,u16 c,int type){
 static void draw(void){
  SetMode(MODE_3|BG2_ENABLE);
  rect(0,0,W,H,DARK);rect(0,0,W,47,GREEN);rect(0,43,W,4,LIME);
- text(12,10,"LEAF BLACK",WHITE,2);text(14,58,"CHOOSE STARTER",LIME,1);
+ text(12,10,"LEAF BLACK",WHITE,2);
+ if(confirmed){
+   text(36,57,"STARTER CHOSEN",LIME,1);
+   creature(120,94,colors[choice],choice);
+   text(120-(int)(sizeof("FERNLING")-1)*3,121,names[choice],WHITE,1);
+   if(choice==0) text(82,134,"PLANT TYPE",LIME,1);
+   if(choice==1) text(91,134,"FIRE TYPE",LIME,1);
+   if(choice==2) text(88,134,"WATER TYPE",LIME,1);
+   rect(0,145,W,15,GREEN);text(8,149,"B BACK",WHITE,1);
+   return;
+ }
+ text(14,58,"CHOOSE STARTER",LIME,1);
  rect(9,78,68,62,choice==0?RGB5(8,18,7):RGB5(5,12,8));rect(86,78,68,62,choice==1?RGB5(23,9,4):RGB5(5,12,8));rect(163,78,68,62,choice==2?RGB5(4,12,23):RGB5(5,12,8));
  rect(9,78,68,2,choice==0?LIME:GREEN);rect(86,78,68,2,choice==1?LIME:GREEN);rect(163,78,68,2,choice==2?LIME:GREEN);
  creature(43,101,colors[0],0);creature(120,101,colors[1],1);creature(197,101,colors[2],2);
  text(14,126,"FERN",WHITE,1);text(91,126,"CIND",WHITE,1);text(168,126,"BROOK",WHITE,1);
- rect(0,145,W,15,GREEN);text(8,149,"LEFT RIGHT A",WHITE,1);
+ rect(0,145,W,15,GREEN);text(8,149,"LEFT RIGHT A SELECT",WHITE,1);
 }
 int main(void){
  irqInit();irqEnable(IRQ_VBLANK);SetMode(MODE_3|BG2_ENABLE);
- while(1){VBlankIntrWait(); scanKeys();u16 keys=keysDown();if(keys&KEY_LEFT)choice=(choice+2)%3;if(keys&KEY_RIGHT)choice=(choice+1)%3;if(keys&KEY_A){choice=(choice+1)%3;}draw();}
+ while(1){
+   VBlankIntrWait();scanKeys();u16 keys=keysDown();
+   if(confirmed){if(keys&KEY_B)confirmed=0;}
+   else{
+     if(keys&KEY_LEFT)choice=(choice+2)%3;
+     if(keys&KEY_RIGHT)choice=(choice+1)%3;
+     if(keys&KEY_A)confirmed=1;
+   }
+   draw();
+ }
  return 0;
 }
